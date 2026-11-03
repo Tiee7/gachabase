@@ -33,7 +33,7 @@ export function validatePool(value) {
   const cards = value.cards.map((c,i) => {
     if (!c || typeof c !== 'object') throw Error(`第 ${i+1} 张卡格式错误。`);
     const result = {};
-    for (const [key,max] of Object.entries({id:80,title:60,unit:80,category:40,era:100,text:600,symbol:8,source:500})) {
+    for (const [key,max] of Object.entries({id:80,title:60,unit:80,category:40,era:100,text:600,source:500})) {
       if (typeof c[key] !== 'string' || !c[key].trim() || c[key].length > max) throw Error(`第 ${i+1} 张卡的 ${key} 需为 1–${max} 字。`);
       result[key] = c[key].trim();
     }
@@ -72,7 +72,7 @@ export function validateSave(raw,samplePool) {
   // Only exact, unchanged legacy sample cards receive their authored questions.
   if(raw.version!==2&&samplePool)for(const card of pool.cards){
     const sample=samplePool.cards.find(c=>c.id===card.id);
-    if(card.questions===undefined&&sample&&['title','unit','category','era','text','symbol','rarity','source'].every(k=>card[k]===sample[k])){
+    if(card.questions===undefined&&sample&&['title','unit','category','era','text','rarity','source'].every(k=>card[k]===sample[k])){
       card.questions=structuredClone(sample.questions||[]);card.art=sample.art;
     }
   }
